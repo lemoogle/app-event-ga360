@@ -215,24 +215,14 @@ view: sessions_period_base {
   extends: [period_base]
   extension: required
 
-  parameter: single_property {
-    hidden: yes
-    description: "Single Property?"
-    type: string
-    default_value: "Yes"
-  }
-
   dimension: date_period_latest {
     description: "Is the selected period (This Period) the current period?"
     type: yesno
     group_label: "Event"
     sql:
-      {% if single_property._parameter_value == "'Yes'" %}
       ${partition_date} >= DATE_ADD(${date_period_start_date_latest_period}, INTERVAL -1 DAY) AND ${partition_date} <= ${date_period_end_date} AND
       ${_date} >= ${date_period_start_date_latest_period} AND ${_date} < ${date_period_end_date}
-      {% else %}
-      ${_date} >= ${date_period_start_date_latest_period} AND ${_date} < ${date_period_end_date}
-      {% endif %} ;;
+    ;;
   }
 
   dimension: date_period_comparison_period {
@@ -241,12 +231,9 @@ view: sessions_period_base {
     type: yesno
     group_label: "Event"
     sql:
-      {% if single_property._parameter_value == "'Yes'" %}
       ${partition_date} >= DATE_ADD(${date_period_start_date_comparison_period}, INTERVAL -1 DAY) AND ${partition_date} <= ${date_period_end_date} AND
       ${_date} >= ${date_period_start_date_comparison_period} AND ${_date} < ${date_period_end_date}
-      {% else %}
-      ${_date} >= ${date_period_start_date_comparison_period} AND ${_date} < ${date_period_end_date}
-      {% endif %} ;;
+       ;;
   }
 }
 
